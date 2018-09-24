@@ -27,7 +27,7 @@ if (delayInObs == undefined) {
 
 // Creating an object of StarfishService to communicate with the Starfish Studio platform
 const options = {
-        'endpoint' : 'https://poc.api.ssniot.cloud',
+        'endpoint' : 'https://api.data-platform.developer.ssni.com',
         'credentials' : {
          'clientId' : process.argv[2],
          'clientSecret' : process.argv[3]
