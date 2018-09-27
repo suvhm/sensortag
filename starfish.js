@@ -17,7 +17,7 @@ const tokenHasExpired = token => {
 };
 
 const DEFAULT_SOLUTION = 'sandbox';
-const DEFAULT_ENDPOINT = 'https://api.data-platform.developer.ssni.com';
+const DEFAULT_ENDPOINT = 'https://poc.api.ssniot.cloud';
 
 class StarfishService
 {
