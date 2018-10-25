@@ -48,7 +48,7 @@ parts:
       -  request@^2.34
 
   bluepy:
-    plugin: python3
+    plugin: python
     source: bluepy
     build-packages: [libglib2.0-dev]
 
