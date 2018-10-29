@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-var StarfishService = require('./starfish.js');
 
 /* Checking if correct number of arguments are passes */
-if ((process.argv.length  < 6) || (process.argv.length > 7))
+if ((process.argv.length  < 4 ) || (process.argv.length > 5))
 {
-   console.log("Usage : " + __filename + " [ClientId] [ClienSecret] [UUID] [NoOfObs] [DelayInObs(5s)]");
+   console.log("Usage : " + __filename + " [UUID] [NoOfObs] [DelayInObs(5s)]");
    process.exit(-1);
 }
 
@@ -14,7 +13,8 @@ var sensor_data = process.env.SNAP_COMMON + '/sensor_data.txt'
 
 //Spawning a child process for checking TI-Sensortag device UUID*/
  const spawnSync = require('child_process').spawnSync;
- const ls = spawnSync('sensortag', ['--all', '-n 1','-f ',filename, process.argv[4]]);
+ const ls = spawnSync('sensortag', ['--all', '-n 1','-f ',filename, process.argv[2]]);
+
  var out = ls.stderr.toString();
  if (out.includes('Failed to connect')) {
      console.log("Error!! Invalid SensorTag UUID");
@@ -28,13 +28,13 @@ if (delayInObs == undefined) {
 
       //Spawning a child process for obtaining observations from the TI-Sensortag device
       const spawn = require('child_process').spawn;
-      const lsNew = spawn('sensortagUpdate', [process.argv[5], delayInObs, process.argv[4], filename , exceptionFilename]);
+      const lsNew = spawn('sensortagUpdate', [process.argv[3], delayInObs, process.argv[2], filename , exceptionFilename]);
 
 //Creating a file event notifier to read observations from a file and post it to the Starfish Studio platform
 var fs = require('fs');
 var Inotify = require('inotify').Inotify;
 var inotify = new Inotify();
-//var dataUpdateCount = 0;
+var dataUpdateCount = 1;
 var watcher = {
  path: process.env.SNAP_COMMON + '/',
  watch_for: Inotify.IN_CLOSE_WRITE,
@@ -49,7 +49,9 @@ var watcher = {
       var file = fs.readFileSync(filename, "utf8" );
       var observation = file;
       console.log("Sensor_observation : " + observation);
-      fs.appendFileSync('/var/snap/starfish-sensortag-app/common/sensor_data', observation + "\n" );
+      fs.appendFileSync('/var/snap/sensortag-app/common/sensor_data', dataUpdateCount + ": No of Times \n" + observation + "\nAt Time: " + timestamp + "\n" );
+      console.log("Writing Data successfully " + dataUpdateCount + " times");
+      dataUpdateCount += 1;     
       var closing_session = file;
       if (closing_session == "Closing Session") {
           console.log("Data writing finished : " + timestamp );

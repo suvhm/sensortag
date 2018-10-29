@@ -1,13 +1,13 @@
-name: starfish-sensortag-app 
+name: sensortag-app 
 version: '0.1' 
 #list of architectures the snap may run on. Defaults to [all].
 #architectures: 
 #	- all | amd64 | i386 | armhf
 architectures: [ armhf ]
-summary: Fetching TI-Sensortag data and posting to Starfish Data Platform
+summary: Fetching TI-Sensortag data and writing it into a file 
 description: |
      This snap app fetch the sensor's data from TI-Sensortag CC2650 and 
-     Post the same to Starfish Data Platform
+     Write the Data into a file
 grade:  devel
 confinement: devmode
 
